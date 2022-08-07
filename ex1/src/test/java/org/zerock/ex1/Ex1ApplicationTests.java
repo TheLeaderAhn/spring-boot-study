@@ -8,6 +8,9 @@ class Ex1ApplicationTests {
 
     @Test
     void contextLoads() {
+
+        System.out.println("ContextLoads 실행 : test 메서드...");
+
     }
 
 }
