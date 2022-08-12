@@ -7,9 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.ex2.ebtity.Memo;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -91,7 +93,7 @@ public class MemoRepositoryTests {
     public void testPagedefault() {
 
         // 1패아자 10개
-        Pageable pageable = PageRequest.of(0,10);
+        Pageable pageable = PageRequest.of(0, 10);
 
         Page<Memo> result = memoRepository.findAll(pageable);
 
@@ -108,11 +110,11 @@ public class MemoRepositoryTests {
 
         System.out.println("has next page :::: " + result.hasNext()); // 다음페이지 존재 여부
 
-        System.out.println(" first page ? : "+ result.isFirst()); // 시작페이지 (0) 여부
+        System.out.println(" first page ? : " + result.isFirst()); // 시작페이지 (0) 여부
 
         System.out.println("-------------------------------------------");
 
-        for(Memo memo : result.getContent()) {
+        for (Memo memo : result.getContent()) {
             System.out.println(memo);
         }
 
@@ -120,15 +122,15 @@ public class MemoRepositoryTests {
 
     // 페이지 정렬조건 추가
     @Test
-    public void testSort(){
+    public void testSort() {
 
-        Sort sort1  = Sort.by("mno").descending();
+        Sort sort1 = Sort.by("mno").descending();
         Sort sort2 = Sort.by("memoText").ascending();
         Sort sortAll = sort1.and(sort2); // and 를 이용한 연결
 
 
 //        Pageable pageable = PageRequest.of(0, 10, sort1);
-        Pageable pageable = PageRequest.of(0,10, sortAll);
+        Pageable pageable = PageRequest.of(0, 10, sortAll);
 
         Page<Memo> result = memoRepository.findAll(pageable);
 
@@ -138,5 +140,65 @@ public class MemoRepositoryTests {
 
     }
 
+    // 쿼리 메서드 활용
+    @Test
+    public void testQueryMethods() {
+
+        List<Memo> list = memoRepository.findByMnoBetweenOrderByMnoDesc(70L, 80L);
+
+        for (Memo memo : list) {
+            System.out.println(memo);
+        }
+
+    }
+
+    // 쿼리 메서드와 Pageable 의 결합
+    @Test
+    public void testQueryMethodWithPageable(){
+
+        Pageable pageable = PageRequest.of(0,10, Sort.by("mno").descending());
+
+        Page<Memo> result = memoRepository.findByMnoBetween(10L, 50L, pageable);
+
+        result.get().forEach(memo -> {
+            System.out.println(memo);
+        });
+
+    }
+
+
+//    deleteBy 로  시작하는 삭제처리
+    @Commit
+    @Transactional
+    @Test
+    public void testDeleteQueryMethos(){
+
+        memoRepository.deleteMemoByMnoLessThan(10L);
+
+    }
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
