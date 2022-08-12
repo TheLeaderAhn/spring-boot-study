@@ -20,5 +20,4 @@ public class Memo {
     @Column(length = 200, nullable = false)
     private String memoText;
 
-
 }
