@@ -11,7 +11,7 @@ public class SampleDTO {
 
     private Long sno;
 
-    private String firtst;
+    private String first;
 
     private String last;
 
