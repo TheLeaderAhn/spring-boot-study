@@ -1,4 +1,9 @@
-package com.ahnjy.ex01.Controller;/**
+package com.ahnjy.ex01.Controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
  * description    :
  * packageName    : com.ahnjy.ex01.Controller
  * fileName       : SampleController
@@ -8,5 +13,14 @@ package com.ahnjy.ex01.Controller;/**
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022/09/19        ahnjy       최초 생성
- */public class SampleController {
+ */
+@RestController
+public class SampleController {
+
+    @GetMapping("/hello")
+    public String[] hello(){
+        return new String[]{"hello", "world"};
+    }
+
+
 }
