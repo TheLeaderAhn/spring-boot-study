@@ -19,6 +19,7 @@ import javax.persistence.*;
 @Table(name="tbl_memo")
 @ToString
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
