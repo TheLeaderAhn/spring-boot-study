@@ -37,8 +37,10 @@ public class SampleController {
     }
 
 
-    @GetMapping({"/ex2"})
+    @GetMapping({"/ex2","/exlink"})
     public void exModel(Model model) {
+
+        log.info("exModel...init ::::");
 
         List<SampleDTO> list = IntStream.rangeClosed(1,20).asLongStream().mapToObj(i -> {
             SampleDTO dto = SampleDTO.builder()
@@ -85,6 +87,15 @@ public class SampleController {
             redirectAttributes.addFlashAttribute("dto",dto);
 
         return "redirect:/sample/ex3";
+    }
+
+
+    @GetMapping({"/exLayout1","/exLayout2", "/exTemplate"})
+    public void exLayout1(){
+
+        log.info("exLayout1.................");
+
+
     }
 
 }
