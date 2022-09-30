@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
@@ -41,6 +43,41 @@ public class GuestbookRepositoryTests {
     @Test
     public void intStream_rangeClosed() {
         IntStream.rangeClosed(1,10).forEach(System.out::println);
+    }
+
+
+    // 300개 데이터 밀어 넣기
+    @Test
+    public void insertDummies() {
+
+            IntStream.rangeClosed(1,300).forEach(i -> {
+
+                Guestbook guestbook = Guestbook.builder()
+                        .title("제목 [ " +  i + " ]")
+                        .content("내용..."+i)
+                        .writer("user" + (i % 10))
+                        .build();
+                System.out.println(guestbookRepository.save(guestbook));
+            });
+
+
+    }
+
+    @Test
+    public void updateTest() {
+
+        Optional<Guestbook> result = guestbookRepository.findById(300L);
+
+        if(result.isPresent()) {
+            Guestbook guestbook = result.get();
+
+            guestbook.changeTitle(("변경 제목 ........"));
+            guestbook.changeContent("변경된 내용 확인......");
+
+            guestbookRepository.save(guestbook);
+
+        }
+
     }
 
 }

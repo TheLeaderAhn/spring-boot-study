@@ -5,9 +5,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -26,6 +24,19 @@ import java.time.LocalDateTime;
 @Getter
 abstract class BaseEntity {
 
+    @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    private Long gno;
+
+    @Column(length = 100, nullable = false)
+    private String title;
+
+    @Column(length = 1500, nullable = false)
+    private String content;
+
+    @Column(length = 50, nullable = false)
+    private String writer;
+
     @CreatedDate
     @Column(name="regdate" , updatable=false)
     private LocalDateTime regDate;
@@ -33,5 +44,13 @@ abstract class BaseEntity {
     @LastModifiedDate
     @Column(name="moddate")
     private LocalDateTime modDate;
+
+    public void changeTitle(String title){
+        this.title = title;
+    }
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
 
 }
