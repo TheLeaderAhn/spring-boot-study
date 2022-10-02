@@ -1,6 +1,9 @@
 package io.ahnjy.guestbook.controller;
 
+import io.ahnjy.guestbook.dto.GuestbookDTO;
 import io.ahnjy.guestbook.dto.PageRequestDTO;
+import io.ahnjy.guestbook.dto.PageResultDTO;
+import io.ahnjy.guestbook.entity.Guestbook;
 import io.ahnjy.guestbook.service.GuestbookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -8,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * description    :
@@ -31,6 +36,7 @@ public class GuestbookController {
 
     @GetMapping("/")
     public String index(){
+
         return "redirect:/guestbook/list";
     }
 
@@ -39,7 +45,10 @@ public class GuestbookController {
 
         log.info("list init ::::::::::::::::::::::::::" + pageRequestDTO);
 
-        model.addAttribute("result", service.getList(pageRequestDTO));
+        PageResultDTO<GuestbookDTO, Guestbook>  result = service.getList(pageRequestDTO);
+        log.info("result:::" + result);
+
+        model.addAttribute("result", result);
 
     }
 
