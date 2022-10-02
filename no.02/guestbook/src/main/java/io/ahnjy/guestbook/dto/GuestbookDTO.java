@@ -25,10 +25,15 @@ import java.time.LocalDateTime;
 public class GuestbookDTO {
 
     private Long gno;
-    private String title;
-    private String content;
-    private String writer;
-    private LocalDateTime regDate, modeDate;
 
+    private String title;
+
+    private String content;
+
+    private String writer;
+
+    private LocalDateTime regDate;
+
+    private LocalDateTime modDate;
 
 }

@@ -1,6 +1,8 @@
 package io.ahnjy.guestbook.service;
 
 import io.ahnjy.guestbook.dto.GuestbookDTO;
+import io.ahnjy.guestbook.dto.PageRequestDTO;
+import io.ahnjy.guestbook.dto.PageResultDTO;
 import io.ahnjy.guestbook.entity.Guestbook;
 
 /**
@@ -15,7 +17,9 @@ import io.ahnjy.guestbook.entity.Guestbook;
  * 2022/10/01        ahnjy       최초 생성
  */
 public interface GuestbookService {
-    Long register(Guestbook dto);
+    Long register(GuestbookDTO dto);
+
+    PageResultDTO<GuestbookDTO, Guestbook> getList(PageRequestDTO requestDTO);
 
     default  Guestbook dtoToEntity(GuestbookDTO dto) {
         Guestbook entity = Guestbook.builder()
@@ -27,4 +31,20 @@ public interface GuestbookService {
 
         return entity;
     }
+
+    default GuestbookDTO entityToDto(Guestbook entity) {
+
+        GuestbookDTO dto = GuestbookDTO.builder()
+                .gno(entity.getGno())
+                .title(entity.getTitle())
+                .content(entity.getContent())
+                .writer(entity.getWriter())
+                .regDate(entity.getRegDate())
+                .modDate(entity.getModDate())
+                .build();
+
+        return dto;
+    }
+
+
 }
