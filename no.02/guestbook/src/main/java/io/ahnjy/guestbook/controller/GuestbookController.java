@@ -84,11 +84,11 @@ public class GuestbookController {
 
 
     // 방명록 상세 , 수정 후 상세 조회 통합
-    //@GetMapping("/read")
     @GetMapping({"/read", "/modify"})
-    public void read(Long gno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model) {
+    public void read(long gno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model ){
 
-        log.info("read .... gno ::: " + gno);
+        log.info("requestDTO....." + requestDTO);
+        log.info("gno..... " + gno);
 
         GuestbookDTO dto = service.read(gno);
 
@@ -99,19 +99,22 @@ public class GuestbookController {
 
     // 수정
     @PostMapping("/modify")
-    public String modify(GuestbookDTO dto, @ModelAttribute("requestDTo") PageRequestDTO requestDTO, RedirectAttributes redirectAttributes) {
+    public String modify(GuestbookDTO dto,
+                         @ModelAttribute("requestDTO") PageRequestDTO requestDTO,
+                         RedirectAttributes redirectAttributes){
 
-        log.info("수정.....");
-        log.info("dto ::: "+ dto);
-        log.info("requestDTO ::: "+ requestDTO);
+
+        log.info("수정 init............");
+        log.info("requestDTO....." + requestDTO);
+        log.info("dto..... " + dto);
 
         service.modify(dto);
 
-        redirectAttributes.addFlashAttribute("page", requestDTO.getPage());
-        redirectAttributes.addFlashAttribute("size", requestDTO.getSize());
-        redirectAttributes.addFlashAttribute("gno", dto.getGno());
+        redirectAttributes.addAttribute("page",requestDTO.getPage());
+        redirectAttributes.addAttribute("gno",dto.getGno());
 
-        return "redirect:/guestbook";
+
+        return "redirect:/guestbook/read";
 
     }
 
