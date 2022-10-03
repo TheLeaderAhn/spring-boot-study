@@ -55,13 +55,39 @@ public class GuestbookServiceImpl implements GuestbookService {
         // null point 방지위해
         Optional<Guestbook> result = repository.findById(gno);
 
-        return result.isPresent()? entityToDto(result.get())  : null;
+        return result.isPresent()? entityToDto(result.get()): null;
     }
+
+    // 삭제
+    @Override
+    public void remove(Long gno){
+        repository.deleteById(gno);
+    }
+
+    // 수정
+    @Override
+    public void modify(GuestbookDTO dto){
+
+        Optional<Guestbook> result = repository.findById(dto.getGno());
+
+        if(result.isPresent()){
+
+            Guestbook entity = result.get();
+
+            entity.changeTitle(dto.getTitle());
+            entity.changeContent(dto.getContent());
+
+            repository.save(entity);
+
+        }
+
+    }
+
 
     @Override
     public PageResultDTO<GuestbookDTO, Guestbook> getList(PageRequestDTO requestDTO) {
 
-        Pageable pageable = requestDTO.getPagealbe(Sort.by("gno").descending());
+        Pageable pageable = requestDTO.getPageable(Sort.by("gno").descending());
 
         Page<Guestbook> result = repository.findAll(pageable);
 

@@ -34,8 +34,9 @@ public class PageRequestDTO {
     }
 
     // JPA 를 이용한경우 페이지 번호가 0부터 시작 함 ... -1 해준다
-    public Pageable getPagealbe(Sort sort) {
-        return PageRequest.of(page -1, size,sort);
+    public Pageable getPageable(Sort sort){
+
+        return PageRequest.of(page -1, size, sort);
     }
 
 }

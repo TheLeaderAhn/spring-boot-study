@@ -39,7 +39,7 @@ public class GuestbookController {
 
 
     @GetMapping("/")
-    public String index(){
+    public String index() {
 
         return "redirect:/guestbook/list";
     }
@@ -47,11 +47,11 @@ public class GuestbookController {
     // 목록 조회
 
     @GetMapping("/list")
-    public void list(PageRequestDTO pageRequestDTO, Model model){
+    public void list(PageRequestDTO pageRequestDTO, Model model) {
 
         log.info("list init ::::::::::::::::::::::::::" + pageRequestDTO);
 
-        PageResultDTO<GuestbookDTO, Guestbook>  result = service.getList(pageRequestDTO);
+        PageResultDTO<GuestbookDTO, Guestbook> result = service.getList(pageRequestDTO);
         log.info("result:::" + result);
 
         model.addAttribute("result", result);
@@ -71,23 +71,24 @@ public class GuestbookController {
     @Transactional
     public String registerPost(GuestbookDTO dto, RedirectAttributes redirectAttributes) {
 
-        log.info("dto........" +dto);
+        log.info("dto........" + dto);
 
         // 새로 추가된 엔티티
         Long gno = service.register(dto);
 
         // 모달 처리용
-        redirectAttributes.addFlashAttribute("msg" ,gno);
+        redirectAttributes.addFlashAttribute("msg", gno);
 
         return "redirect:/guestbook/list";
     }
 
 
-    // 방명록 상세
-    @GetMapping("/read")
-    public void read(Long gno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model){
+    // 방명록 상세 , 수정 후 상세 조회 통합
+    //@GetMapping("/read")
+    @GetMapping({"/read", "/modify"})
+    public void read(Long gno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model) {
 
-        log.info("read .... gno ::: "+ gno);
+        log.info("read .... gno ::: " + gno);
 
         GuestbookDTO dto = service.read(gno);
 
@@ -96,5 +97,41 @@ public class GuestbookController {
     }
 
 
+    // 수정
+    @PostMapping("/modify")
+    public String modify(GuestbookDTO dto, @ModelAttribute("requestDTo") PageRequestDTO requestDTO, RedirectAttributes redirectAttributes) {
+
+        log.info("수정.....");
+        log.info("dto ::: "+ dto);
+        log.info("requestDTO ::: "+ requestDTO);
+
+        service.modify(dto);
+
+        redirectAttributes.addFlashAttribute("page", requestDTO.getPage());
+        redirectAttributes.addFlashAttribute("size", requestDTO.getSize());
+        redirectAttributes.addFlashAttribute("gno", dto.getGno());
+
+        return "redirect:/guestbook";
+
+    }
+
+
+    // 게시물 삭제
+    @PostMapping("/remove")
+    public String remove(long gno, RedirectAttributes redirectAttributes) {
+
+        log.info("삭제 할 gno : " + gno);
+
+        service.remove(gno);
+
+        redirectAttributes.addFlashAttribute("msg",gno);
+
+        return "redirect:/guestbook/list";
+    }
+
+
+
+
 
 }
+
