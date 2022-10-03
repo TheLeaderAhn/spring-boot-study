@@ -27,6 +27,11 @@ public class PageRequestDTO {
 
     private int size;
 
+    // 검색
+    private String type;
+
+    private String keyword;
+
     //기본 설정
     public PageRequestDTO() {
         this.page = 1;

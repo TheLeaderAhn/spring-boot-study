@@ -104,15 +104,15 @@ public class GuestbookController {
                          RedirectAttributes redirectAttributes){
 
 
-        log.info("수정 init............");
-        log.info("requestDTO....." + requestDTO);
-        log.info("dto..... " + dto);
+        log.info("post modify.........................................");
+        log.info("dto: " + dto);
 
         service.modify(dto);
 
         redirectAttributes.addAttribute("page",requestDTO.getPage());
+        redirectAttributes.addAttribute("type",requestDTO.getType());
+        redirectAttributes.addAttribute("keyword",requestDTO.getKeyword());
         redirectAttributes.addAttribute("gno",dto.getGno());
-
 
         return "redirect:/guestbook/read";
 
